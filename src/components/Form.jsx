@@ -30,9 +30,7 @@ function Form({ addTodo, editTodo, handleUpdateDelete }) {
 
     if(isEditing){
       if(text==="" || text.trim() === ""){
-        toast.error("Update not found");
-        setIsEditing(false);
-        setInputBtn("Add");
+        return toast.error("Update not found");
       }
       else{
         handleUpdateDelete(editTodo.id);
@@ -43,7 +41,12 @@ function Form({ addTodo, editTodo, handleUpdateDelete }) {
       }
       else{
         addTodo(newTodo);
-        (newTodo.item.trim() !== "" && toast.success("new todo added"));
+        (newTodo.item.trim() !== "" && toast.success("new todo added", {
+          style: {
+            backgroundColor: '#fff',
+            color: 'rgb(84, 9, 128)',
+          },
+        }));
       
       }
 
