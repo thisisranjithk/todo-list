@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { v4 as uuidv4 } from 'uuid';
 import { FaEdit } from "react-icons/fa";
+import toast, { Toaster } from 'react-hot-toast';
 
-function Form({ addTodo, editTodo, handleDelete }) {
+function Form({ addTodo, editTodo, handleUpdateDelete }) {
   const [text, setText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [inputBtn, setInputBtn] = useState("Add")
@@ -29,12 +30,12 @@ function Form({ addTodo, editTodo, handleDelete }) {
 
     if(isEditing){
       if(text==="" || text.trim() === ""){
-        alert("Update not Found");
+        toast.error("Update not found");
         setIsEditing(false);
         setInputBtn("Add");
       }
       else{
-        handleDelete(editTodo.id);
+        handleUpdateDelete(editTodo.id);
         addTodo(newTodo);
         setIsEditing(false)
         setInputBtn("Add");
@@ -42,10 +43,15 @@ function Form({ addTodo, editTodo, handleDelete }) {
       }
       else{
         addTodo(newTodo);
+        (newTodo.item.trim() !== "" && toast.success("new todo added"));
+      
       }
-    setText("");
+
+      setText("");
   };
 
+  
+ 
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
@@ -59,6 +65,7 @@ function Form({ addTodo, editTodo, handleDelete }) {
         <button className={isEditing? "input-btn input-update-btn" : "input-btn input-add-btn"}>
           {isEditing? <FaEdit /> :<IoMdAdd />} {inputBtn}
         </button>
+        <Toaster />
       </form>
     </div>
   );

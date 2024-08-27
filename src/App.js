@@ -4,21 +4,29 @@ import TodoData from "./data/TodoData";
 import { useState } from "react";
 import TodoList from "./components/TodoList";
 import Form from "./components/Form";
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   const [todoData, setTodoData] = useState(TodoData);
   const [editTodo, seteditTodo] = useState({});
 
   const deleteTodo = (id) => {
-    // if (window.confirm("Are you sure want to delete!")) {
-    //   setTodoData(todoData.filter((todo) => todo.id !== id));
-    // }
     setTodoData(todoData.filter((todo) => todo.id !== id));
+    toast.error("Deleted...", {
+      duration: 1000
+    });
+  };
+
+  const updateDeleteTodo = (id) => {
+    setTodoData(todoData.filter((todo) => todo.id !== id));
+    toast.success("Updated...");
   };
 
   const addTodo = (newTodo) => {
     if (!newTodo || newTodo.item === "" || newTodo.item.trim() === "") {
-      alert("Please add Todo...");
+      toast.error("Please add Todo...", {
+        duration: 1000
+      });
     } else {
       setTodoData((pre) => [...pre, newTodo]);
     }
@@ -31,12 +39,13 @@ function App() {
   return (
     <>
       <Header title={"Todo List"} />
-      <Form addTodo={addTodo} editTodo={editTodo} handleDelete={deleteTodo}/>
+      <Form addTodo={addTodo} editTodo={editTodo} handleUpdateDelete={updateDeleteTodo} />
       <TodoList
         todoData={todoData}
         handleDelete={deleteTodo}
         editItem={editItem}
       />
+      <Toaster />
     </>
   );
 }
